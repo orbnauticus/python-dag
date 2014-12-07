@@ -112,7 +112,8 @@ class DAG(set):
     >>> len(list(graph.topsort('c', endpoints=['c'])))
     0
 
-    Cycles are automatically detected and reported
+    Cycles are automatically detected and reported as soon as they are
+    detected. Whatever non-cyclic ordering can be determined will be reported.
 
     >>> graph.add(('d', 'c'))  # d before c
 
@@ -127,7 +128,7 @@ class DAG(set):
     >>> print(next(result))
     Traceback (most recent call last):
     ...
-    topsort.CycleError: 'c', 'd'
+    dag.CycleError: 'c', 'd'
 
     '''
     def topsort(self, *start, **kwargs):
