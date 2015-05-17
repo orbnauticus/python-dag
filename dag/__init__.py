@@ -71,7 +71,6 @@ class TopologicalSorter(object):
             raise CycleError(self.graph)
 
 
-
 class DAG(set):
     '''
     Directed Acyclic Graph
@@ -131,7 +130,7 @@ class DAG(set):
     dag.CycleError: 'c', 'd'
 
     '''
-    def topsort(self, *start, **kwargs):
+    def topsort(self, *start, endpoints=()):
         """
         Topologically sort the graph, possibly from a starting node.
 
@@ -141,22 +140,24 @@ class DAG(set):
         If arguments are present, the results are limited to paths which
         lead to those nodes.
         """
-        endpoints = kwargs.pop('endpoints', ())
-        if kwargs:
-            raise TypeError("topsort got unexpected keyword argument "
-                            "{!r}".format(kwargs.popitem()[0]))
         return TopologicalSorter(self, start, endpoints)
 
     def edges_from(self, *nodes):
+        '''
+        Return a set of edges which originate at nodes
+        '''
         return {edge for edge in self if edge[0] in nodes}
 
     def edges_to(self, *nodes):
+        '''
+        Return a set of edges which terminate at nodes
+        '''
         return {edge for edge in self if edge[1] in nodes}
 
 
 __all__ = ['DAG', 'CycleError']
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     import doctest
     doctest.testmod()
